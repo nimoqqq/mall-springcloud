@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/mall-api-commons/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mall-commodity-8001/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mall-member-8002/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud-eureka-service-7001/src/main/java" charset="UTF-8" />
   </component>
 </project>

@@ -8,8 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="springcloud-eureka-service-7001" />
-        <module name="mall-commodity-8001" />
         <module name="mall-api-commons" />
+        <module name="mall-commodity-8001" />
+        <module name="mall-member-8002" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
@@ -20,6 +21,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="mall-api-commons" options="-parameters" />
       <module name="mall-commodity-8001" options="-parameters" />
+      <module name="mall-member-8002" options="-parameters" />
       <module name="springcloud-eureka-service-7001" options="-parameters" />
       <module name="springcloud-eureka-service-7002" options="-parameters" />
     </option>
