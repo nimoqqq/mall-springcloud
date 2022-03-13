@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="springcloud-eureka-service-7001" />
+        <module name="mall-commodity-8001" />
+        <module name="mall-api-commons" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8">
+      <module name="springcloud-eureka-service-7002" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="mall-api-commons" options="-parameters" />
+      <module name="mall-commodity-8001" options="-parameters" />
+      <module name="springcloud-eureka-service-7001" options="-parameters" />
+      <module name="springcloud-eureka-service-7002" options="-parameters" />
+    </option>
+  </component>
+</project>
