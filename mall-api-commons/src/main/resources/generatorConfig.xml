@@ -29,14 +29,35 @@
             <property name="nullCatalogMeansCurrent" value="true" />
         </jdbcConnection>
         <!--指定生成model的路径-->
-        <javaModelGenerator targetPackage="com.nimo.commodity.mbg.model" targetProject="/Users/chuf/workingSoftware/mall-springcloud/mall-commodity-8001/src/main/java"/>
+        <javaModelGenerator targetPackage="com.nimo.security.mbg.model" targetProject="/Users/chuf/workingSoftware/mall-springcloud/mall-api-commons/src/main/java"/>
         <!--指定生成mapper.xml的路径-->
-        <sqlMapGenerator targetPackage="com.nimo.commodity.mbg.mapper" targetProject="/Users/chuf/workingSoftware/mall-springcloud/mall-commodity-8001/src/main/resources"/>
+        <sqlMapGenerator targetPackage="com.nimo.security.mbg.mapper" targetProject="/Users/chuf/workingSoftware/mall-springcloud/mall-api-commons/src/main/resources"/>
         <!--指定生成mapper接口的的路径-->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.nimo.commodity.mbg.mapper"
-                             targetProject="/Users/chuf/workingSoftware/mall-springcloud/mall-commodity-8001/src/main/java"/>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.nimo.security.mbg.mapper"
+                             targetProject="/Users/chuf/workingSoftware/mall-springcloud/mall-api-commons/src/main/java"/>
         <!--生成全部表tableName设为%-->
-        <table tableName="pms_brand">
+<!--        <table tableName="pms_brand">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+        <!--后台用户表-->
+        <table tableName="ums_admin">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--后台用户角色表-->
+        <table tableName="ums_role">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--后台用户权限表-->
+        <table tableName="ums_permission">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="ums_admin_role_relation">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="ums_role_permission_relation">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="ums_admin_permission_relation">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

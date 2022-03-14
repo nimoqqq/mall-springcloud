@@ -8,6 +8,7 @@
         <module>mall-api-commons</module>
         <module>mall-commodity-8001</module>
         <module>mall-member-8002</module>
+        <module>mall-security-8003</module>
     </modules>
 
     <parent>
