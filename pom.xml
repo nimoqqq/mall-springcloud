@@ -9,6 +9,7 @@
         <module>mall-commodity-8001</module>
         <module>mall-member-8002</module>
         <module>mall-security-8003</module>
+        <module>mall-api-gateway-8004</module>
     </modules>
 
     <parent>
@@ -37,9 +38,14 @@
     </properties>
 
     <dependencies>
+        <!--SpringBoot通用依赖模块-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

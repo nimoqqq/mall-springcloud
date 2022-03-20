@@ -1,0 +1,17 @@
+server:
+  port: 8004
+
+spring:
+  application:
+    name: mall-api-gateway
+  cloud: # 配置Spring Cloud 相关属性
+    gateway: # 配置Spring Cloud Gateway相关属性
+      discovery: # 配置网关发现机制
+        locator: # 配置处理机制
+          enabled: false # 网关自动映射处理逻辑，默认关闭
+          lower-case-service-id: true # 开启服务名称小写转换。Eureka 对服务命名管理默认全大写
+      routes: # 配置网关中路由
+        - id: path_route # 路由的ID
+          uri: lb://mall-commodity-8001 # 当前路由定义对应的微服务转发地址
+          predicates: # 断言，路径相匹配的进行路由
+            - Path=/brand/**
