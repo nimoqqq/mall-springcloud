@@ -28,19 +28,19 @@ spring:
           uri: lb://MALL-SECURITY-8003
           predicates:
             - Path=/admin/**
-          filters:
-            # 对指定数量的路径前缀进行去除
-#            - StripPrefix=1
-            - name: Hystrix  # 熔断
-              args:
-                name: fallbackcmd
-                # fallback 时调用的方法 http://localhost:80004/fallback
-                fallbackUri: forward:/fallback
-            - name: RequestRateLimiter  # 限流
-              args:
-                key-resolver: '#{@uriKeyResolver}'  # 限流过滤器的 Bean 名称
-                redis-rate-limiter.replenishRate: 1  # 希望允许用户每秒处理多少个请求
-                redis-rate-limiter.burstCapacity: 3  # 用户允许在一秒钟内完成的最大请求数
+#          filters:
+#            # 对指定数量的路径前缀进行去除
+##            - StripPrefix=1
+#            - name: Hystrix  # 熔断
+#              args:
+#                name: fallbackcmd
+#                # fallback 时调用的方法 http://localhost:80004/fallback
+#                fallbackUri: forward:/fallback
+#            - name: RequestRateLimiter  # 限流
+#              args:
+#                key-resolver: '#{@uriKeyResolver}'  # 限流过滤器的 Bean 名称
+#                redis-rate-limiter.replenishRate: 1  # 希望允许用户每秒处理多少个请求
+#                redis-rate-limiter.burstCapacity: 3  # 用户允许在一秒钟内完成的最大请求数
 
 eureka:
   instance:
