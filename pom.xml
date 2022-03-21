@@ -35,6 +35,7 @@
         <swagger-annotations.version>1.6.0</swagger-annotations.version>
         <guava.version>20.0</guava.version>
         <hutool.version>5.7.22</hutool.version>
+        <fastjson.version>1.2.62</fastjson.version>
     </properties>
 
     <dependencies>
@@ -58,6 +59,11 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
     </dependencies>
 

@@ -8,13 +8,15 @@ package com.nimo.security.services.impl;
  * @create: 2022-03-14 14:20
  **/
 
+import com.alibaba.fastjson.JSONObject;
+import com.nimbusds.jose.JOSEException;
+import com.nimo.common.utils.JwtTokenUtil;
 import com.nimo.security.dao.UmsAdminRoleRelationDao;
 import com.nimo.security.mbg.mapper.UmsAdminMapper;
 import com.nimo.security.mbg.model.UmsAdmin;
 import com.nimo.security.mbg.model.UmsAdminExample;
 import com.nimo.security.mbg.model.UmsPermission;
 import com.nimo.security.services.UmsAdminService;
-import com.nimo.security.utils.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -41,8 +43,6 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UmsAdminServiceImpl.class);
     @Autowired
     private UserDetailsService userDetailsService;
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Value("${jwt.tokenHead}")
@@ -93,7 +93,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            token = jwtTokenUtil.generateToken(userDetails);
+            token = JwtTokenUtil.createToken(JSONObject.toJSONString(userDetails));
         } catch (AuthenticationException e) {
             LOGGER.warn("登录异常:{}", e.getMessage());
         }

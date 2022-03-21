@@ -1,7 +1,7 @@
 package com.nimo.common.api;
 
 public interface IErrorCode {
-    long getCode();
+    int getCode();
 
     String getMessage();
 }

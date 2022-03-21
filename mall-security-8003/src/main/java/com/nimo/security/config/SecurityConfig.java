@@ -1,5 +1,6 @@
 package com.nimo.security.config;
 
+import com.nimo.security.component.JWTAuthenticationFilter;
 import com.nimo.security.component.JwtAuthenticationTokenFilter;
 import com.nimo.security.component.RestAuthenticationEntryPoint;
 import com.nimo.security.component.RestfulAccessDeniedHandler;
@@ -10,6 +11,7 @@ import com.nimo.security.services.UmsAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -56,6 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
     /**
      *
      * @param httpSecurity
@@ -68,7 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, // 允许对于网站静态资源的无授权访问
+                // 允许对于网站静态资源的无授权访问
+                .antMatchers(HttpMethod.GET,
                         "/",
                         "/*.html",
                         "/favicon.ico",
@@ -79,9 +85,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs/**"
                 )
                 .permitAll()
-                .antMatchers("/admin/login", "/admin/register")// 对登录注册要允许匿名访问
+                // 对登录注册要允许匿名访问
+                .antMatchers("/admin/login", "/admin/register")
                 .permitAll()
-                .antMatchers(HttpMethod.OPTIONS)//跨域请求会先进行一次options请求
+                //跨域请求会先进行一次options请求
+                .antMatchers(HttpMethod.OPTIONS)
                 .permitAll()
 //                .antMatchers("/**")//测试时全部运行访问
 //                .permitAll()
@@ -90,7 +98,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 禁用缓存
         httpSecurity.headers().cacheControl();
         // 添加JWT filter
-        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new JWTAuthenticationFilter(authenticationManager(), redisTemplate), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new JwtAuthenticationTokenFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
         //添加自定义未授权和未登录结果返回
         httpSecurity.exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)
@@ -118,6 +127,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    @Override
     public UserDetailsService userDetailsService() {
         //获取登录用户信息
         return username -> {
@@ -130,21 +140,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         };
     }
 
-    @Bean
-    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
-        return new JwtAuthenticationTokenFilter();
-    }
-
-    /**
-     * 解决 无法直接注入 AuthenticationManager
-     *
-     * @return
-     * @throws Exception
-     */
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Bean
+//    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter(AuthenticationManager authenticationManager) {
+//        return new JwtAuthenticationTokenFilter(authenticationManager);
+//    }
+//
+//    @Bean
+//    public JWTAuthenticationFilter jwtAuthenticationFilter(AuthenticationManager authenticationManager, StringRedisTemplate redisTemplate){
+//        return new JWTAuthenticationFilter(authenticationManager,redisTemplate);
+//    }
+//
+//    /**
+//     * 解决 无法直接注入 AuthenticationManager
+//     *
+//     * @return
+//     * @throws Exception
+//     */
+//    @Bean
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
 }

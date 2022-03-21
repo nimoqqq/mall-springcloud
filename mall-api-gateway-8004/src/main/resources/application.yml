@@ -8,14 +8,39 @@ spring:
     gateway: # 配置Spring Cloud Gateway相关属性
       discovery: # 配置网关发现机制
         locator: # 配置处理机制
-          enabled: false # 网关自动映射处理逻辑，默认关闭
+          enabled: true # 网关自动映射处理逻辑，默认关闭
           lower-case-service-id: true # 开启服务名称小写转换。Eureka 对服务命名管理默认全大写
       routes: # 配置网关中路由
         - id: path_route # 路由的ID
-          uri: lb://mall-commodity-8001 # 当前路由定义对应的微服务转发地址
+          uri: lb://MALL-COMMODITY-8001 # 当前路由定义对应的微服务转发地址
+          # 谓词，命名是有套路的。是GatewayPredicate接口实现的命名前缀，XxxRoutePredicateFactory
           predicates: # 断言，路径相匹配的进行路由
             - Path=/brand/**
-
+          filters:
+            # XxxGatewayFilterFactory
+            # 请求添加参数
+            - AddRequestParameter=username, macro
+            # 对指定数量的路径前缀进行去除
+#            - StripPrefix=1
+#            - PrefixPath=/brand
+        # 采用自定义路由ID
+        - id: mall-security
+          uri: lb://MALL-SECURITY-8003
+          predicates:
+            - Path=/admin/**
+          filters:
+            # 对指定数量的路径前缀进行去除
+#            - StripPrefix=1
+            - name: Hystrix  # 熔断
+              args:
+                name: fallbackcmd
+                # fallback 时调用的方法 http://localhost:80004/fallback
+                fallbackUri: forward:/fallback
+            - name: RequestRateLimiter  # 限流
+              args:
+                key-resolver: '#{@uriKeyResolver}'  # 限流过滤器的 Bean 名称
+                redis-rate-limiter.replenishRate: 1  # 希望允许用户每秒处理多少个请求
+                redis-rate-limiter.burstCapacity: 3  # 用户允许在一秒钟内完成的最大请求数
 
 eureka:
   instance:
@@ -34,3 +59,9 @@ eureka:
     fetchRegistry: true
     service-url:
       defaultZone: http://eureka7001.com:7001/eureka, http://eureka7002.com:7002/eureka
+
+# 配置白名单路径
+exclusion:
+  url:
+    - /admin/register
+    - /admin/login

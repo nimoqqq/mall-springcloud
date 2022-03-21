@@ -1,5 +1,6 @@
 package com.nimo.security.controller;
 
+import com.nimbusds.jose.JOSEException;
 import com.nimo.common.api.CommonResult;
 import com.nimo.security.dto.UmsAdminLoginParam;
 import com.nimo.security.mbg.model.UmsAdmin;
@@ -50,7 +51,7 @@ public class UmsAdminController {
     @ApiOperation(value = "登录以后返回token")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult login(@RequestBody UmsAdminLoginParam umsAdminLoginParam, BindingResult result) {
+    public CommonResult login(@RequestBody UmsAdminLoginParam umsAdminLoginParam, BindingResult result) throws JOSEException {
         String token = adminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword());
         if (token == null) {
             return CommonResult.validateFailed("用户名或密码错误");
