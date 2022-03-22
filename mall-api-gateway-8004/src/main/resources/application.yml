@@ -16,10 +16,10 @@ spring:
           # 谓词，命名是有套路的。是GatewayPredicate接口实现的命名前缀，XxxRoutePredicateFactory
           predicates: # 断言，路径相匹配的进行路由
             - Path=/brand/**
-          filters:
+#          filters:
             # XxxGatewayFilterFactory
             # 请求添加参数
-            - AddRequestParameter=username, macro
+#            - AddRequestParameter=username, macro
             # 对指定数量的路径前缀进行去除
 #            - StripPrefix=1
 #            - PrefixPath=/brand

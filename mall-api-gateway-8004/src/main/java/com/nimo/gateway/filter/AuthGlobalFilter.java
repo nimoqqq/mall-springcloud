@@ -3,6 +3,7 @@ package com.nimo.gateway.filter;
 import com.alibaba.fastjson.JSON;
 import com.nimbusds.jwt.SignedJWT;
 import com.nimo.common.api.CommonResult;
+import com.nimo.common.constants.JWTConstants;
 import com.nimo.common.constants.RedisConstants;
 import com.nimo.common.enums.AuthEnum;
 import com.nimo.common.utils.JwtTokenUtil;
@@ -10,7 +11,6 @@ import com.nimo.common.utils.Md5Utils;
 import com.nimo.common.vo.Authority;
 import com.nimo.common.vo.UmsAdmin;
 import com.nimo.gateway.config.ExclusionUrlConfig;
-import com.nimo.gateway.constants.JWTConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -110,7 +110,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
      */
     private boolean hasPermission(String headerToken, String path) {
         try {
-            if (StringUtils.isEmpty(headerToken)) {
+            if (ObjectUtils.isEmpty(headerToken)) {
                 return false;
             }
 
@@ -118,7 +118,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
             Object payload = jwt.getJWTClaimsSet().getClaim("payload");
             UmsAdmin user = JSON.parseObject(payload.toString(), UmsAdmin.class);
             // 生成Key， 把权限放入到redis中
-            String keyPrefix = RedisConstants.TOKEN_KEY_PREFIX + user.getId() + ":";
+            String keyPrefix = RedisConstants.TOKEN_KEY_PREFIX + user.getUsername() + ":";
             String token = headerToken.replace(JWTConstants.TOKEN_PREFIX, "");
             String keySuffix = Md5Utils.getMD5(token.getBytes());
             String key = keyPrefix + keySuffix;
